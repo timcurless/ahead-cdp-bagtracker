@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Baggage Management{% endblock %}
+{% block content %}
+<form>
+  <fieldset class="form-group">
+    <label for="formGroupExampleInput">First Name</label>
+    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Brian">
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="formGroupExampleInput2">Last Name</label>
+    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Nuszkowski">
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="formGroupExampleInput2">Flight Number</label>
+    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="AHD9999">
+  </fieldset>
+  <button type="button" class="btn btn-primary">Check Bag</button>
+</form>
+
+        <form class="form-inline">
+          <div class="form-group">
+            <label for="exampleInputName2">First Name</label>
+            <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail2">Last Name </label>
+            <input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">
+          </div>
+          <button type="button" class="btn btn-primary">Send invitation</button>
+        </form>
+
+        <form id="create" action="#">
+          <label>First Name:</label>
+          <input id="first_name" name="first_name" type="text"> <br/><br/>
+          <label>Last Name:</label>
+          <input id="last_name" name="last_name" type="text"> <br/><br/>
+          <label>Flight Number:</label>
+          <input id="flight_number" name="flight_number" type="text" value="AHD1234">
+        </form><br/>
+        <div><button class="somebutton">Check in Bag</button></div>
+        <div id="results"></div> 
+
+        <br/><br/>
+        <form id="status" action="#">
+          <label>Bag ID:</label>
+          <input id="bag_status_id" name="bag_status_id" type="text"> 
+        </form><br/>
+        <div><button class="get_bag_status">Get Bag Status</button></div>
+        <div id="bag_status_results"></div> 
+
+
+        <br/><br/>
+        <form id="update" action="#">
+          <label>Bag ID:</label>
+          <input id="update_bag_status_id" name="update_bag_status_id" type="text"> 
+          <select id="status_event">
+            <option value="SECURITY_SCREEN">Security Screen</option>
+            <option value="LOADING">Loading to aircraft</option>
+            <option value="IN_TRANSIT">In Transit on Aircraft</option>
+            <option value="UNLOADING">Unloading from Aircraft</option>
+            <option value="AT_CLAIM">At baggage claim</option>
+            <option value="MISSING">Bag missing</option>
+          </select>
+          <div><input id="update_bag_status_details" name="update_bag_status_details" type="text"></div>
+        </form><br/>
+        <div><button class="update_bag_status">Update Bag Status</button></div>
+        <div id="update_bag_status_results"></div> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script>
+            $('.somebutton').click(function() {
+                var ting = JSON.stringify({ first_name: $( "#first_name" ).val(), last_name: $( "#last_name" ).val(), flight_number: $( "#flight_number" ).val()});
+                $.ajax(
+                {
+                    url : "/api/create",
+                    type: "POST",
+                    contentType: "application/json",
+                    data : ting,
+                    dataType: 'json',
+                    success:function(data, textStatus, jqXHR) 
+                    {
+                        //data: return data from server
+                        $( "#results" ).text("Your bag tracking number is: " + data['bag_id']);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) 
+                    {
+                        //if fails      
+                    }
+                });
+            });
+
+            $('.get_bag_status').click(function() {
+                var bag_id = $( "#bag_status_id" ).val();
+                $.ajax(
+                {
+                    url : "/api/status/" + bag_id,
+                    type: "GET",
+                    success:function(data, textStatus, jqXHR) 
+                    {
+                        //data: return data from server
+                        $( "#bag_status_results" ).text("Bag status: " + data['bag_status'] + " at " + data['bag_status_time'] + " - Bag Details: " + data['bag_status_details']);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) 
+                    {
+                         $( "#bag_status_results" ).text(JSON.parse(jqXHR['responseText'])['message']);
+                    }
+                });
+            });
+
+            $('.update_bag_status').click(function() {
+                var t3 = JSON.stringify({ bag_id: $( "#update_bag_status_id" ).val(), event_name: $( "#status_event" ).val(), event_details: $( "#update_bag_status_details" ).val() });
+                $.ajax(
+                {
+                    url : "/api/update",
+                    type: "POST",
+                    contentType: "application/json",
+                    data : t3,
+                    dataType: 'json',
+                    success:function(data, textStatus, jqXHR) 
+                    {
+                        //data: return data from server
+                        $( "#update_bag_status_results" ).text(data['message']);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) 
+                    {
+                         $( "#update_bag_status_results" ).text(JSON.parse(jqXHR['responseText'])['message']);
+                    }
+                });
+            });
+            </script>
+{% endblock %}

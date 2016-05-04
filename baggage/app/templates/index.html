@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Baggage Management{% endblock %}
+{% block content %}
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">Ahead Aviation Baggage</h3>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li class="active"><a href="/">Home</a></li>
+                  <li><a href="/status">Bag Status</a></li>
+                  <li><a href="/manage">Manage Bags</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="inner cover">
+            <h1 class="cover-heading">Check In Baggage</h1>
+            <div id="response"></div>
+            <form>
+              <fieldset class="form-group">
+                <label for="formFirstNameInput">First Name</label>
+                <input type="text" class="form-control" id="formFirstNameInput">
+              </fieldset>
+              <fieldset class="form-group">
+                <label for="formLastNameInput">Last Name</label>
+                <input type="text" class="form-control" id="formLastNameInput">
+              </fieldset>
+              <fieldset class="form-group">
+                <label for="formFlightNumberInput">Flight Number</label>
+                <input type="text" class="form-control" id="formFlightNumberInput" placeholder="AHD9999">
+              </fieldset>
+              <button type="button" id="check_bag" class="btn btn-primary">Check Bag</button>
+            </form>
+          </div>
+
+          <div class="mastfoot">
+            <div class="inner">
+                &copy; 2016 Ahead Aviation 
+                <!-- <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p> -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+{% endblock %}
+{% block footer %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha256-Sk3nkD6mLTMOF0EOpNtsIry+s1CsaqQC1rVLTAy+0yc= sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+{% endblock %}
